@@ -13,7 +13,7 @@ def _require(key: str) -> str:
 
 
 SMTP_HOST: str = os.getenv("SMTP_HOST", "smtp.gmail.com")
-SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
+SMTP_PORT: int = int(os.getenv("SMTP_PORT") or "587")
 SMTP_USER: str = _require("SMTP_USER")
 SMTP_PASSWORD: str = _require("SMTP_PASSWORD")
 RECIPIENT_EMAILS: list[str] = [
@@ -21,4 +21,4 @@ RECIPIENT_EMAILS: list[str] = [
 ]
 SENDER_NAME: str = os.getenv("SENDER_NAME", "AI & Data Newsletter")
 DB_PATH: str = os.getenv("DB_PATH", "data/seen_articles.db")
-MAX_ARTICLES: int = int(os.getenv("MAX_ARTICLES", "20"))
+MAX_ARTICLES: int = int(os.getenv("MAX_ARTICLES") or "20")

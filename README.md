@@ -43,6 +43,10 @@ Add these secrets in your repo under **Settings → Secrets and variables → Ac
 | `SMTP_PASSWORD` | Gmail App Password |
 | `RECIPIENT_EMAILS` | comma-separated recipient list |
 
+`SMTP_PORT` can be omitted — defaults to `587`.
+
+**Gmail App Password:** myaccount.google.com → Security → 2-Step Verification → App passwords.
+
 Trigger manually anytime via **Actions → Newsletter → Run workflow**.
 
 ## Development
