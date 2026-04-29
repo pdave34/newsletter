@@ -1,7 +1,7 @@
 import logging
 import os
 import sqlite3
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 
 from .models import Article
 
@@ -46,9 +46,7 @@ def mark_seen(db_path: str, articles: list[Article]) -> None:
 def prune_old(db_path: str, days: int = 180) -> None:
     cutoff = (datetime.now(tz=timezone.utc) - timedelta(days=days)).isoformat()
     with _connect(db_path) as conn:
-        deleted = conn.execute(
-            "DELETE FROM seen_articles WHERE seen_at < ?", (cutoff,)
-        ).rowcount
+        deleted = conn.execute("DELETE FROM seen_articles WHERE seen_at < ?", (cutoff,)).rowcount
         conn.commit()
     if deleted:
         logger.info("Pruned %d old articles from seen_articles", deleted)

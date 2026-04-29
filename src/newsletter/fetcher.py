@@ -6,7 +6,7 @@ import feedparser
 import httpx
 from bs4 import BeautifulSoup
 
-from .sources import Source, SOURCES
+from .sources import SOURCES, Source
 
 logger = logging.getLogger(__name__)
 
@@ -78,12 +78,14 @@ def _parse_hf_papers(data: list[dict[str, Any]]) -> list[dict[str, Any]]:
         arxiv_id = paper.get("id", "")
         if not title or not arxiv_id:
             continue
-        entries.append({
-            "title": title,
-            "link": f"https://huggingface.co/papers/{arxiv_id}",
-            "summary": paper.get("summary", ""),
-            "published": item.get("publishedAt", ""),
-        })
+        entries.append(
+            {
+                "title": title,
+                "link": f"https://huggingface.co/papers/{arxiv_id}",
+                "summary": paper.get("summary", ""),
+                "published": item.get("publishedAt", ""),
+            }
+        )
     return entries
 
 
@@ -109,6 +111,7 @@ def _fetch_scrape(source: Source) -> list[dict[str, Any]]:
 def _scrape_anthropic(soup: BeautifulSoup) -> list[dict[str, Any]]:
     entries = []
     import re as _re
+
     for a in soup.find_all("a", href=_re.compile(r"^/news/[a-z0-9]")):
         href = "https://www.anthropic.com" + a["href"]
         title_tag = a.find(["h2", "h3", "h4"])
@@ -118,7 +121,9 @@ def _scrape_anthropic(soup: BeautifulSoup) -> list[dict[str, Any]]:
         time_tag = a.find("time")
         published = time_tag.get_text(strip=True) if time_tag else ""
         if title:
-            entries.append({"title": title, "link": href, "summary": summary, "published": published})
+            entries.append(
+                {"title": title, "link": href, "summary": summary, "published": published}
+            )
     return entries
 
 

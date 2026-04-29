@@ -1,9 +1,8 @@
 import logging
-import sys
 
 from . import config
 from .fetcher import fetch_all
-from .filter import deduplicate, rank, limit
+from .filter import deduplicate, limit, rank
 from .models import Article
 from .parser import parse_entries
 from .renderer import render

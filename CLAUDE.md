@@ -15,7 +15,15 @@ uv run python -m newsletter.main
 uv run newsletter
 ```
 
-There are no tests or linter configs in this project.
+```bash
+# Lint
+uv run ruff check src/
+
+# Format
+uv run ruff format src/
+```
+
+Ruff is configured in `pyproject.toml`: 100-char line limit, `E`/`F`/`I` rules (pycodestyle, pyflakes, isort).
 
 ## Architecture
 

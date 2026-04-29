@@ -88,7 +88,7 @@ def _get_date(entry: dict[str, Any]) -> datetime:
         if val and isinstance(val, str):
             for fmt in ("%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S+00:00", "%Y-%m-%d"):
                 try:
-                    return datetime.strptime(val[:19], fmt[:len(val[:19])]).replace(
+                    return datetime.strptime(val[:19], fmt[: len(val[:19])]).replace(
                         tzinfo=timezone.utc
                     )
                 except ValueError:

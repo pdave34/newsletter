@@ -31,7 +31,7 @@ uv run python -m newsletter.main
 
 ## Scheduling (GitHub Actions)
 
-Runs automatically every Monday at 08:00 UTC via `.github/workflows/newsletter.yml`.
+Runs automatically every Monday at 12:00 PM UTC via `.github/workflows/newsletter.yml`.
 
 Add these secrets in your repo under **Settings → Secrets and variables → Actions**:
 
@@ -44,6 +44,15 @@ Add these secrets in your repo under **Settings → Secrets and variables → Ac
 | `RECIPIENT_EMAILS` | comma-separated recipient list |
 
 Trigger manually anytime via **Actions → Newsletter → Run workflow**.
+
+## Development
+
+```bash
+uv run ruff check src/   # lint
+uv run ruff format src/  # format
+```
+
+100-char line limit, import sorting enforced.
 
 ## Customization
 
