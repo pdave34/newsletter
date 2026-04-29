@@ -1,0 +1,46 @@
+name: Newsletter
+
+on:
+  schedule:
+    - cron: '0 12 * * 0-6'   # Everyday at 12:00 UTC
+  workflow_dispatch:        # Manual trigger via GitHub UI
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Restore seen_articles database
+        uses: actions/cache@v4
+        with:
+          path: data/seen_articles.db
+          key: sqlite-db-${{ runner.os }}
+          restore-keys: |
+            sqlite-db-
+
+      - name: Run newsletter pipeline
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          RECIPIENT_EMAILS: ${{ secrets.RECIPIENT_EMAILS }}
+          SENDER_NAME: ${{ secrets.SENDER_NAME }}
+        run: uv run python -m newsletter.main
+
+      - name: Save seen_articles database
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/seen_articles.db
+          key: sqlite-db-${{ runner.os }}-${{ github.run_id }}
