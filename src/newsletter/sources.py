@@ -25,6 +25,11 @@ SOURCES: list[Source] = [
     Source("Ahead of AI", "https://magazine.sebastianraschka.com/feed", "rss"),
     Source("Simon Willison", "https://simonwillison.net/atom/everything/", "rss"),
     Source("Chip Huyen", "https://huyenchip.com/feed.xml", "rss"),
+    Source(
+        "Google Cloud AI Blog",
+        "https://cloudblog.withgoogle.com/products/ai-machine-learning/rss/",
+        "rss",
+    ),
     Source("Eugene Yan", "https://eugeneyan.com/writing/", "scrape"),
     # JSON API
     Source(
