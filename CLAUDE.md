@@ -69,6 +69,9 @@ uv sync
 # Run the full pipeline (fetches, ranks, sends email)
 uv run python -m newsletter.main
 
+# Dry run — fetch and rank without sending email or marking seen
+uv run python -m newsletter.main --dry-run
+
 # Or via the script entry point
 uv run newsletter
 ```

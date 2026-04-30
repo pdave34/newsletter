@@ -29,6 +29,14 @@ RECIPIENT_EMAILS=you@example.com  # comma-separated for multiple
 uv run python -m newsletter.main
 ```
 
+## Dry run
+
+Run the full pipeline without sending email or marking articles as seen:
+
+```bash
+uv run python -m newsletter.main --dry-run
+```
+
 ## Pruning seen articles
 
 The pipeline tracks sent articles to avoid resending them. To reset this:
