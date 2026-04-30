@@ -29,6 +29,18 @@ RECIPIENT_EMAILS=you@example.com  # comma-separated for multiple
 uv run python -m newsletter.main
 ```
 
+## Pruning seen articles
+
+The pipeline tracks sent articles to avoid resending them. To reset this:
+
+```bash
+# Clear everything (resend all articles on next run)
+uv run python -m newsletter.main --prune
+
+# Delete entries older than N days
+uv run python -m newsletter.main --prune 7
+```
+
 ## Scheduling (GitHub Actions)
 
 Runs automatically every Monday at 12:00 PM UTC via `.github/workflows/newsletter.yml`.

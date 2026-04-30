@@ -1,3 +1,4 @@
+import argparse
 import logging
 
 from . import config
@@ -18,6 +19,25 @@ logger = logging.getLogger(__name__)
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--prune",
+        nargs="?",
+        const=0,
+        type=int,
+        metavar="DAYS",
+        help=(
+            "Clear seen-articles DB. Omit DAYS to wipe all; "
+            "pass N to remove entries older than N days."
+        ),
+    )
+    args = parser.parse_args()
+
+    if args.prune is not None:
+        prune_old(config.DB_PATH, days=args.prune)
+        logger.info("Pruning complete")
+        return
+
     logger.info("Starting newsletter pipeline")
 
     # 1. Prune stale dedup state
