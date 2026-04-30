@@ -31,6 +31,11 @@ def main() -> None:
             "pass N to remove entries older than N days."
         ),
     )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Run pipeline without sending email or marking articles seen.",
+    )
     args = parser.parse_args()
 
     if args.prune is not None:
@@ -69,11 +74,17 @@ def main() -> None:
     ranked = rank(fresh)
     top = limit(ranked, config.MAX_ARTICLES)
     logger.info("Selected top %d articles for newsletter", len(top))
+    for article in top:
+        logger.info("  [%s] %s (score=%d)", article.source, article.title, article.score)
 
     # 7. Render HTML
     html = render(top)
 
-    # 7. Send email
+    if args.dry_run:
+        logger.info("Dry run — skipping send and mark_seen")
+        return
+
+    # 8. Send email
     send(
         html=html,
         recipients=config.RECIPIENT_EMAILS,
@@ -84,7 +95,7 @@ def main() -> None:
         sender_name=config.SENDER_NAME,
     )
 
-    # 8. Mark sent articles as seen
+    # 9. Mark sent articles as seen
     mark_seen(config.DB_PATH, top)
     logger.info("Newsletter pipeline complete")
 
