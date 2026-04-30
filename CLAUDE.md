@@ -45,7 +45,15 @@ prune_old (SQLite) → fetch_all → parse_entries → deduplicate → rank → 
 
 **Data flow types:**
 - `fetcher` output: `dict[str, list[dict[str, Any]]]`
-- After `parser`: `list[Article]` — fields: `url`, `title`, `summary` (280 char max, HTML-stripped), `source`, `published: datetime`, `score: int`
+- After `parser`: `list[Article]` — fields: `url`, `title`, `summary` (280 char max, HTML-stripped), `source`, `published: datetime`, `engagement: int`, `score: int`
+
+**Scoring breakdown** (all additive):
+| Signal | Range | Detail |
+|---|---|---|
+| Keywords | 0–N | +1 per keyword match in title+summary |
+| Recency | 0, 1, 3 | +3 if ≤7 days old, +1 if ≤30 days |
+| Source weight | 1–3 | defined in `SOURCE_WEIGHTS` in `filter.py`; default 1 |
+| Engagement | 0–3 | `min(points+comments // 50, 3)`; HN and HF papers only |
 
 ## Key scraping details
 

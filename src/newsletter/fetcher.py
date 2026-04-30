@@ -64,6 +64,7 @@ def _parse_hn(data: dict[str, Any]) -> list[dict[str, Any]]:
             "link": h.get("url") or f"https://news.ycombinator.com/item?id={h.get('objectID')}",
             "summary": h.get("story_text") or "",
             "published": h.get("created_at", ""),
+            "engagement": (h.get("points") or 0) + (h.get("num_comments") or 0),
         }
         for h in hits
         if h.get("title")
@@ -84,6 +85,7 @@ def _parse_hf_papers(data: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "link": f"https://huggingface.co/papers/{arxiv_id}",
                 "summary": paper.get("summary", ""),
                 "published": item.get("publishedAt", ""),
+                "engagement": paper.get("upvotes") or 0,
             }
         )
     return entries

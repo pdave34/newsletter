@@ -9,4 +9,5 @@ class Article:
     summary: str
     source: str
     published: datetime
+    engagement: int = field(default=0, compare=False)
     score: int = field(default=0, compare=False)

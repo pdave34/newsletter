@@ -73,6 +73,7 @@ uv run ruff format src/  # format
 ## Customization
 
 - **Add/remove sources:** edit `src/newsletter/sources.py`
+- **Adjust source weights:** edit `SOURCE_WEIGHTS` in `src/newsletter/filter.py` (default 1, primary sources 3, vendor blogs 2)
 - **Add keywords:** edit the `KEYWORDS` list in `src/newsletter/filter.py`
 - **Change article limit:** set `MAX_ARTICLES` in `.env` (default: 3)
 - **Change recency window:** set `MAX_AGE_DAYS` in `.env` (default: 30) — articles older than this are excluded

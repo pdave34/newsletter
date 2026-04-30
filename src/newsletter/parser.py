@@ -38,6 +38,7 @@ def _parse_entry(source_name: str, entry: dict[str, Any]) -> Article | None:
         summary=summary,
         source=source_name,
         published=published,
+        engagement=int(entry.get("engagement") or 0),
     )
 
 

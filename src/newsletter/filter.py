@@ -2,6 +2,21 @@ from datetime import datetime, timezone
 
 from .models import Article
 
+SOURCE_WEIGHTS: dict[str, int] = {
+    # Primary announcements
+    "Anthropic News": 3,
+    "OpenAI Blog": 3,
+    "Google DeepMind": 3,
+    "HuggingFace Daily Papers": 3,
+    # Vendor engineering blogs
+    "AWS ML Blog": 2,
+    "Azure Blog": 2,
+    "Microsoft AI Blog": 2,
+    "Google Cloud AI Blog": 2,
+    "Databricks Blog": 2,
+    "Snowflake Blog": 2,
+}
+
 KEYWORDS = [
     "llm",
     "large language model",
@@ -85,6 +100,7 @@ KEYWORDS = [
 def score_article(article: Article) -> int:
     text = (article.title + " " + article.summary).lower()
     keyword_score = sum(1 for kw in KEYWORDS if kw in text)
+
     age_days = (datetime.now(timezone.utc) - article.published).days
     if age_days <= 7:
         recency_bonus = 3
@@ -92,7 +108,11 @@ def score_article(article: Article) -> int:
         recency_bonus = 1
     else:
         recency_bonus = 0
-    return keyword_score + recency_bonus
+
+    source_bonus = SOURCE_WEIGHTS.get(article.source, 1)
+    engagement_bonus = min(article.engagement // 50, 3)
+
+    return keyword_score + recency_bonus + source_bonus + engagement_bonus
 
 
 def filter_recent(articles: list[Article], max_age_days: int = 30) -> list[Article]:
