@@ -62,5 +62,6 @@ uv run ruff format src/  # format
 
 - **Add/remove sources:** edit `src/newsletter/sources.py`
 - **Add keywords:** edit the `KEYWORDS` list in `src/newsletter/filter.py`
-- **Change article limit:** set `MAX_ARTICLES` in `.env` (default: 20)
+- **Change article limit:** set `MAX_ARTICLES` in `.env` (default: 3)
+- **Change recency window:** set `MAX_AGE_DAYS` in `.env` (default: 30) — articles older than this are excluded
 - **Change schedule:** edit the `cron` expression in `.github/workflows/newsletter.yml`

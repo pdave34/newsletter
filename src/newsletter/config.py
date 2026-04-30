@@ -21,4 +21,5 @@ RECIPIENT_EMAILS: list[str] = [
 ]
 SENDER_NAME: str = os.getenv("SENDER_NAME", "AI & Data Newsletter")
 DB_PATH: str = os.getenv("DB_PATH", "data/seen_articles.db")
-MAX_ARTICLES: int = int(os.getenv("MAX_ARTICLES") or "20")
+MAX_ARTICLES: int = int(os.getenv("MAX_ARTICLES") or "3")
+MAX_AGE_DAYS: int = int(os.getenv("MAX_AGE_DAYS") or "30")

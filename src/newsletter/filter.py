@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from .models import Article
 
 KEYWORDS = [
@@ -82,7 +84,20 @@ KEYWORDS = [
 
 def score_article(article: Article) -> int:
     text = (article.title + " " + article.summary).lower()
-    return sum(1 for kw in KEYWORDS if kw in text)
+    keyword_score = sum(1 for kw in KEYWORDS if kw in text)
+    age_days = (datetime.now(timezone.utc) - article.published).days
+    if age_days <= 7:
+        recency_bonus = 3
+    elif age_days <= 30:
+        recency_bonus = 1
+    else:
+        recency_bonus = 0
+    return keyword_score + recency_bonus
+
+
+def filter_recent(articles: list[Article], max_age_days: int = 30) -> list[Article]:
+    cutoff = datetime.now(timezone.utc).timestamp() - max_age_days * 86400
+    return [a for a in articles if a.published.timestamp() >= cutoff]
 
 
 def deduplicate(articles: list[Article], seen_urls: set[str]) -> list[Article]:

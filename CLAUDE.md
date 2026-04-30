@@ -41,7 +41,7 @@ prune_old (SQLite) → fetch_all → parse_entries → deduplicate → rank → 
 - `storage.py` — SQLite `seen_articles` table; `get_seen_urls`, `mark_seen`, `prune_old(days=180)`
 - `renderer.py` — Jinja2 renders `templates/newsletter.html.j2`
 - `sender.py` — `smtplib` STARTTLS to Gmail (or any SMTP)
-- `config.py` — loads `.env` via `python-dotenv`; exposes `SMTP_*`, `RECIPIENT_EMAILS` (list), `SENDER_NAME`, `DB_PATH`, `MAX_ARTICLES`
+- `config.py` — loads `.env` via `python-dotenv`; exposes `SMTP_*`, `RECIPIENT_EMAILS` (list), `SENDER_NAME`, `DB_PATH`, `MAX_ARTICLES` (default 3), `MAX_AGE_DAYS` (default 30)
 
 **Data flow types:**
 - `fetcher` output: `dict[str, list[dict[str, Any]]]`
